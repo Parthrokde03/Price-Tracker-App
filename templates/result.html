@@ -1,87 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Price Result</title>
-    <style>
-        body {
-            background-color: #f2f2f2;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 50px;
-        }
-        .card {
-            display: inline-block;
-            padding: 30px;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            margin-bottom: 40px;
-        }
-        h1 {
-            color: #333;
-        }
-        .price {
-            font-size: 24px;
-            color: #ff6600;
-        }
-        canvas {
-            margin-top: 20px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Price Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="card">
-        <img src="{{ image_url }}" alt="Product Image" style="width:300px; border-radius: 10px;">
-        <h1>{{ title }}</h1>
-        {% if "₹" in price %}
-        <p class="price">Current Price: {{ price }}</p>
-        {% else %}
-        <p class="price">Current Price: ₹{{ price }}</p>
-        {% endif %}
+<body class="result-body">
+    <div class="container result-container">
+        <header>
+            <a class="logo" href="/">💰 PriceTracker</a>
+        </header>
+
+        <main class="result-grid">
+            <section class="card product-card">
+                <img src="{{ image_url }}" alt="Product image for {{ title }}" class="product-image">
+                <div class="product-text">
+                    <p class="eyebrow">Current snapshot</p>
+                    <h1 class="product-title">{{ title }}</h1>
+                    <p class="price-tag">{{ price }}</p>
+                </div>
+            </section>
+
+            <section class="card history-card">
+                <div class="history-header">
+                    <h2>📈 Price History</h2>
+                    <p class="muted">Showing last {{ history|length }} record{{ '' if history|length == 1 else 's' }}</p>
+                </div>
+
+                {% if history %}
+                    <div class="chart-wrapper">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+                {% else %}
+                    <p class="muted">No history yet. Add this item to your watch list by tracking it again.</p>
+                {% endif %}
+            </section>
+        </main>
+
+        <div class="result-actions">
+            <a href="/" class="secondary-link">🔄 Track another product</a>
+        </div>
     </div>
 
     {% if history %}
-    <div class="card" style="width: 600px;">
-        <h2>📈 Price History (Last {{ history | length }} Records)</h2>
-        <canvas id="priceChart" width="500" height="250"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = {{ date_labels | tojson }};
+        const prices = {{ price_data | tojson }};
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
+        if (labels.length && prices.length) {
             const ctx = document.getElementById('priceChart').getContext('2d');
-            const chart = new Chart(ctx, {
+            new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: {{ history | map(attribute='date') | list | tojson }},
+                    labels,
                     datasets: [{
                         label: 'Price (₹)',
-                        data: {{ history | map(attribute='price') | list | tojson }},
-                        borderColor: 'orange',
-                        backgroundColor: 'rgba(255,165,0,0.1)',
-                        tension: 0.3
+                        data: prices,
+                        borderColor: '#ff9900',
+                        backgroundColor: 'rgba(255, 153, 0, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.25,
+                        fill: true,
+                        pointRadius: 3,
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => `₹${ctx.parsed.y}` } }
+                    },
                     scales: {
                         x: {
-                            ticks: {
-                                callback: function(val, index) {
-                                    const label = this.getLabelForValue(val);
-                                    return label.split("T")[0]; // Only show date
-                                }
-                            }
+                            ticks: { color: '#333' },
+                            grid: { display: false }
                         },
                         y: {
-                            beginAtZero: false
+                            beginAtZero: false,
+                            ticks: { color: '#333' }
                         }
                     }
                 }
             });
-        </script>
-    </div>
+        }
+    </script>
     {% endif %}
-
-    <br>
-    <a href="/" style="text-decoration:none;color:blue;">🔄 Track Another Product</a>
 </body>
-    </html>
+</html>

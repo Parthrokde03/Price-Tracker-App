@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Price Tracker App</title>
+  <title>Price Tracker</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
-</head>
 <body>
-
   <div class="container">
     <header>
       <h1 class="logo">💰 PriceTracker</h1>
@@ -21,16 +17,14 @@
     <main>
       <div class="search-box">
         <form action="/track" method="POST">
-          <input type="text" name="url" placeholder="Paste product URL here..." required>
+          <input type="text" name="url" placeholder="Paste Amazon or Flipkart product URL..." required>
           <button type="submit">🔍 Track</button>
         </form>
-        {% if title %}
-            <h2>Product: {{ title }}</h2>
-            <h3>Price: ₹{{ price }}</h3>
+        {% if error %}
+          <div class="alert">{{ error }}</div>
         {% endif %}
       </div>
     </main>
   </div>
-
 </body>
-  </html>
+</html>

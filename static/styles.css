@@ -88,6 +88,139 @@ header {
   word-wrap: break-word;
 }
 
+.alert {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(255, 0, 64, 0.12);
+  border: 1px solid rgba(255, 0, 64, 0.3);
+  color: #ffe1e8;
+}
+
+/* Result Page */
+body.result-body {
+  color: #0f172a;
+}
+
+body.result-body .container {
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 80px;
+  padding-bottom: 40px;
+}
+
+.result-grid {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.94);
+  color: #0f172a;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+}
+
+.product-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 14px;
+}
+
+.product-image {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #f8f8f8;
+  padding: 8px;
+}
+
+.product-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #ff9900;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.product-title {
+  color: #0f172a;
+  margin: 6px 0;
+  font-size: 1.4rem;
+}
+
+.price-tag {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ff9900;
+}
+
+.muted {
+  color: #5f6b7a;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.muted a {
+  color: inherit;
+}
+
+.history-card {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-header h2 {
+  margin-bottom: 6px;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 280px;
+}
+
+.result-actions {
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.secondary-link {
+  color: #fff;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 10px 16px;
+  border-radius: 12px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.secondary-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.logo {
+  text-decoration: none;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 600px) {
   .logo {
@@ -118,5 +251,13 @@ header {
   .search-box h2,
   .search-box h3 {
     font-size: 1rem;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.result-body .container {
+    padding-top: 60px;
   }
 }
